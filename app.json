@@ -1,12 +1,7 @@
 {
-  "name": "Start on Heroku: Go",
-  "description": "Go Getting Started Example App",
-  "keywords": [
-    "getting-started",
-    "go",
-    "sample",
-    "example"
-  ],
-  "website": "http://github.com/heroku/go-getting-started",
-  "repository": "http://github.com/heroku/go-getting-started"
+    "name": "Start on Heroku: Go",
+    "description": "Go Getting Started Example App",
+    "keywords": ["podcast", "go", "api"],
+    "website": "http://github.com/Nguyen-Hoang-Nam/micro-podcast-api",
+    "repository": "http://github.com/Nguyen-Hoang-Nam/micro-podcast-api"
 }
