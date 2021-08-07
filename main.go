@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	_ "github.com/heroku/x/hmetrics/onload"
 	"github.com/mmcdole/gofeed"
@@ -23,6 +24,15 @@ func main() {
 
 	router := gin.New()
 	router.Use(gin.Logger())
+	router.Use(cors.Default())
+	// router.Use(cors.New(cors.Config{
+	// 	AllowOrigins:     []string{"https://foo.com"},
+	// 	AllowMethods:     []string{"POST"},
+	// 	AllowHeaders:     []string{"Origin"},
+	// 	ExposeHeaders:    []string{"Content-Length"},
+	// 	AllowCredentials: true,
+	// 	MaxAge: 12 * time.Hour,
+	// }))
 
 	router.POST("/rss", func(c *gin.Context) {
 		var rss Rss
@@ -30,11 +40,6 @@ func main() {
 
 		fp := gofeed.NewParser()
 		feed, _ := fp.ParseURL(rss.Url)
-
-		c.Header("Access-Control-Allow-Origin", "*")
-		c.Header("Access-Control-Allow-Credentials", "true")
-		c.Header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS")
-		c.Header("Access-Control-Allow-Headers", "Origin,X-Requested-With,Content-Type,Accept,content-type,application/json")
 
 		c.JSON(http.StatusOK, gin.H{
 			"title":       feed.Title,
