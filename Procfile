@@ -1,1 +1,1 @@
-web: bin/micro-podcast
+web: bin/micro-podcast-api
