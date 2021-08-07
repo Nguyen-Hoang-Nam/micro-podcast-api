@@ -31,6 +31,11 @@ func main() {
 		fp := gofeed.NewParser()
 		feed, _ := fp.ParseURL(rss.Url)
 
+		c.Header("Access-Control-Allow-Origin", "*")
+		c.Header("Access-Control-Allow-Credentials", "true")
+		c.Header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS")
+		c.Header("Access-Control-Allow-Headers", "Origin,X-Requested-With,Content-Type,Accept,content-type,application/json")
+
 		c.JSON(http.StatusOK, gin.H{
 			"title":       feed.Title,
 			"description": feed.Description,
