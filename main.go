@@ -25,13 +25,15 @@ func main() {
 	router := gin.New()
 	router.Use(gin.Logger())
 	router.Use(cors.Default())
+
 	// router.Use(cors.New(cors.Config{
-	// 	AllowOrigins:     []string{"https://foo.com"},
-	// 	AllowMethods:     []string{"POST"},
-	// 	AllowHeaders:     []string{"Origin"},
+	// 	// AllowOrigins:     []string{"http://localhost:8080"},
+	// 	AllowAllOrigins:  true,
+	// 	AllowMethods:     []string{"POST", "OPTIONS"},
+	// 	AllowHeaders:     []string{"Origin", "Content-Type", "Content-Length", "Accept", "Accept-Encoding"},
 	// 	ExposeHeaders:    []string{"Content-Length"},
 	// 	AllowCredentials: true,
-	// 	MaxAge: 12 * time.Hour,
+	// 	// MaxAge: 12 * time.Hour,
 	// }))
 
 	router.POST("/rss", func(c *gin.Context) {
