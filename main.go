@@ -27,9 +27,9 @@ func main() {
 	// router.Use(cors.Default())
 
 	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"https://micro-podcast-svelte.vercel.app/"},
+		AllowOrigins:     []string{"https://micro-podcast-svelte.vercel.app"},
 		AllowMethods:     []string{"POST", "OPTIONS"},
-		AllowHeaders:     []string{"Origin", "Content-Type", "Content-Length", "Accept", "Accept-Encoding"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Content-Length", "Accept", "Accept-Encoding", "Access-Control-Request-Headers", "Access-Control-Request-Method"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
 	}))
