@@ -12,20 +12,28 @@ import (
 )
 
 type Rss struct {
-	Url string `json:"rss"`
+	Url    string `json:"rss"`
+	Update string `json:"update"`
 }
 
 func main() {
 	port := os.Getenv("PORT")
 	env := os.Getenv("ENV")
 
+	// Heroku need enviroment PORT
 	if port == "" {
 		log.Fatal("$PORT must be set")
 	}
 
+	// Create Middleware
 	router := gin.New()
+
+	// Add Loger to Middleware
 	router.Use(gin.Logger())
 
+	// Add Cors to Middleware
+	// Support all origin in development mode
+	// Only support https://micro-podcast-svelte.vercel.app in product mode
 	if env == "development" {
 		router.Use(cors.Default())
 	} else {
@@ -38,6 +46,7 @@ func main() {
 		}))
 	}
 
+	// Subscript rss by link
 	router.POST("/rss", func(c *gin.Context) {
 		var rss Rss
 		c.BindJSON(&rss)
@@ -45,26 +54,32 @@ func main() {
 		fp := gofeed.NewParser()
 		feed, _ := fp.ParseURL(rss.Url)
 
-		if len(feed.Items) > 25 {
+		if rss.Update == feed.Updated {
 			c.JSON(http.StatusOK, gin.H{
-				"title":       feed.Title,
-				"description": feed.Description,
-				"author":      feed.Author,
-				"authors":     feed.Authors,
-				"update":      feed.Updated,
-				"image":       feed.Image,
-				"items":       feed.Items[0:25],
+				"message": "Already latest",
 			})
 		} else {
-			c.JSON(http.StatusOK, gin.H{
-				"title":       feed.Title,
-				"description": feed.Description,
-				"author":      feed.Author,
-				"authors":     feed.Authors,
-				"update":      feed.Updated,
-				"image":       feed.Image,
-				"items":       feed.Items,
-			})
+			if len(feed.Items) > 25 {
+				c.JSON(http.StatusOK, gin.H{
+					"title":       feed.Title,
+					"description": feed.Description,
+					"author":      feed.Author,
+					"authors":     feed.Authors,
+					"update":      feed.Updated,
+					"image":       feed.Image,
+					"items":       feed.Items[0:25],
+				})
+			} else {
+				c.JSON(http.StatusOK, gin.H{
+					"title":       feed.Title,
+					"description": feed.Description,
+					"author":      feed.Author,
+					"authors":     feed.Authors,
+					"update":      feed.Updated,
+					"image":       feed.Image,
+					"items":       feed.Items,
+				})
+			}
 		}
 	})
 
