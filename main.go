@@ -19,6 +19,7 @@ type Rss struct {
 func main() {
 	port := os.Getenv("PORT")
 	env := os.Getenv("ENV")
+	client := os.Getenv("CLIENT")
 
 	// Heroku need enviroment PORT
 	if port == "" {
@@ -38,7 +39,7 @@ func main() {
 		router.Use(cors.Default())
 	} else {
 		router.Use(cors.New(cors.Config{
-			AllowOrigins:     []string{"https://micro-podcast-svelte.vercel.app"},
+			AllowOrigins:     []string{client},
 			AllowMethods:     []string{"POST", "OPTIONS"},
 			AllowHeaders:     []string{"Origin", "Content-Type", "Content-Length", "Accept", "Accept-Encoding", "Access-Control-Request-Headers", "Access-Control-Request-Method"},
 			ExposeHeaders:    []string{"Content-Length"},
